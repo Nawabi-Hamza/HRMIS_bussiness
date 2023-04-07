@@ -1,0 +1,39 @@
+:root{
+  --my-background:lightblue;
+  --my-text:#42bce4;
+}
+
+.my-bg-primary{
+  background-color: var(--my-background);
+}
+.my-text-primary{
+  color: var(--my-text);
+}
+
+.my-btn-primary{
+  background-color: var(--my-background);
+  color: white;
+  transition: .7s;
+
+}
+
+.my-btn-primary:hover{
+  background-color: white;
+  color: var(--my-text);
+  border: 1px solid var(--my-text);
+  transition: .7s;
+}
+
+.my-btn-outline-primary{
+  background-color: white;
+  color: var(--my-text);
+  border: 1px solid var(--my-text);
+  transition: .7s;
+}
+
+.my-btn-outline-primary:hover{
+  border: 1px solid var(--my-text);
+  background-color: var(--my-background);
+  color: white;
+  transition: .7s;
+}
