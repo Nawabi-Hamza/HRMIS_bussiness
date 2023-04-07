@@ -64,7 +64,7 @@ export default function Empolyee() {
         // var count = 0;
 
   return (
-    <div>
+    <div className='bg-light'>
         <div className="container py-5">
                 <div className='d-flex justify-content-between my-3'>
                         <h1 className='ps-4 mt-2 my-text-primary'>HRMIS</h1>

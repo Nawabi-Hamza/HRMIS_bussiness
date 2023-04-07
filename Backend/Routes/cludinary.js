@@ -18,9 +18,9 @@ const uploads = multer({ storage }).array("images",10);
 
 // Configuration My Api keys from cloudinary
 cloudinary.config({
-  cloud_name: "dskt3xxtq",
-  api_key: "162478373181898",
-  api_secret: "BiiLiH0Oo33cwAgp-zwCGNPjrrk"
+  cloud_name: "",
+  api_key: "",
+  api_secret: ""
 });
 
 
