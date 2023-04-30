@@ -1,8 +1,20 @@
-import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import "../App.css"
+import { AuthContext } from '../context/AuthContext'
 export default function Navbar() {
- 
+    const navigate = useNavigate()
+    const { currentUser,logout } = useContext(AuthContext)
+    // console.log(currentUser)
+    const handleLogout = async(e)=>{
+        e.preventDefault()
+        try{
+            logout()
+            navigate('/')
+        }catch(error){
+            console.log(error)
+        }
+    }
   return (
     <div>
         <nav class="navbar navbar-expand-sm position-sticky my-bg-primary top-0 " style={{zIndex:"10"}}>
@@ -19,14 +31,23 @@ export default function Navbar() {
                         <li class="nav-item">
                             <Link class="nav-link active" to="/" aria-current="page">Home <span class="visually-hidden">(current)</span></Link>
                         </li>
+                        {currentUser?
                         <li class="nav-item">
                             <Link class="nav-link active" to="/empolyee" aria-current="page">Empolyee <span class="visually-hidden"></span></Link>
                         </li>
+                        :
+                        null}
                         
                     </ul>
-                    <form class="d-flex my-2 my-lg-0">
+                    {currentUser?
+                    <form class="d-flex my-2 my-lg-0" onClick={handleLogout}>
                         Logout
                     </form>
+                    :
+                    <form class="d-flex my-2 my-lg-0">
+                        <Link to="/login" className='nav-link'>Login</Link>
+                    </form>
+                    }
                 </div>
           </div>
         </nav>

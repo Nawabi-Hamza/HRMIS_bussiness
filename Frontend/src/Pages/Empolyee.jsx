@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect, useContext } from 'react'
 import axios from "axios"
 import "../App.css"
 import { Link } from 'react-router-dom'
 import CreateEmpolyee from '../Component/CreateEmpolyee'
+import { AuthContext, MainApi } from '../context/AuthContext'
 // import _ from "lodash";
 // import UpdateEmpolyee from '../Component/UpdateEmpolyee';
 
 
 export default function Empolyee() {
+    const { currentUser } = useContext(AuthContext)
+    const [ again,setAgain ] = useState(0)
+    // ================= this is for use token for access api page ============
+    const config = {
+        headers: { Authorization: `Bearer ${currentUser.data.token}` }
+        };
     // =============== Delete User ====================
     const handleDelete = async(userId)=>{
         // e.preventDefault()
         // console.log(userId)
         try{
-            await axios.delete(`http://localhost:5000/empolyee/${userId}`)
+            await axios.delete(`${MainApi}/token/empolyee/${userId}`,config)
+            setAgain(again + 1)
             alert("User Deleted Successfuly....")
         }catch(error){
             return error
@@ -22,10 +30,15 @@ export default function Empolyee() {
     // ================ Show User ====================
     const [ data,setData ] = useState([])
     const [ totalSalary,setTotalSalary ] = useState(0)
-    // useEffect(()=>{            
+        
+        // const bodyParameters = {
+        // key: "value"
+        // };
+        
+    useEffect(()=>{            
         const fetchData = async()=>{
             try{
-                const response = await axios.get("http://localhost:5000/empolyee")
+                const response = await axios.get(`${MainApi}/token/empolyee`,config)
                 setData(response.data);
                 //   ============push all empolyee salary to an array 
                 const show = response.data;
@@ -46,7 +59,7 @@ export default function Empolyee() {
             }
         }
         fetchData()
-    // },[handleDelete,CreateEmpolyee,UpdateEmpolyee])
+    },[again])
 
 
   // create a new `Date` object from the date-time string
@@ -123,7 +136,7 @@ export default function Empolyee() {
                     </table>                      
             </div>        
         </div>
-        <CreateEmpolyee />    
+        <CreateEmpolyee state={again}/>    
     </div>
   )
 }

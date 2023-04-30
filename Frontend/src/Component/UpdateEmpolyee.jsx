@@ -1,14 +1,19 @@
 
 
 
-import React,{ useState } from 'react'
+import React,{ useContext, useState } from 'react'
 import axios from "axios"
 import { useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext, MainApi } from '../context/AuthContext';
 
 export default function NewUpdateEm() {
     const data = useLocation().state;
     const navigate = useNavigate()
-    console.log(data)
+    // console.log(data)
+    const { currentUser } = useContext(AuthContext)
+    const config = {
+        headers: { Authorization: `Bearer ${currentUser.data.token}` }
+        };
    
     const [inputs,setInputs] = useState({
         name:`${data.empolyee_name}`,
@@ -27,7 +32,7 @@ export default function NewUpdateEm() {
             alert("Please Fill All Fields")
         }else{
             try{
-                await axios.patch(`http://localhost:5000/empolyee/${data.empolyee_id}`,inputs)
+                await axios.patch(`${MainApi}/token/empolyee/${data.empolyee_id}`,inputs,config)
                 navigate("/empolyee")
                 alert("Empolyee Updated")
                 
@@ -39,7 +44,7 @@ export default function NewUpdateEm() {
   return (
       <div >
         <div className="container p-md-3 p-lg-5">
-            <form action="">
+            <form action=""> 
                     <div class="p-md-3 p-lg-5">
                     <h1  id="modalTitleId">--{data.empolyee_name}--</h1>
                         <label htmlFor="name">Name:</label>

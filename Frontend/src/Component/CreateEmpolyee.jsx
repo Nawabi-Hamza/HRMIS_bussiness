@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from "axios"
+import { AuthContext, MainApi } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -8,6 +10,12 @@ import axios from "axios"
 
 
 export default function CreateEmpolyee() {
+    const { currentUser } = useContext(AuthContext)
+    // ==========For Useing JSON_WEB_TOKE It Is Importent================
+    const config = {
+        headers: { Authorization: `Bearer ${currentUser.data.token}` }
+        };
+    const navigate = useNavigate()
     const [inputs,setInputs] = useState({
         name:"",
         f_name:"",
@@ -26,7 +34,10 @@ export default function CreateEmpolyee() {
             alert("Please Fill All Fields")
         }else{
             try{
-                await axios.post("http://localhost:5000/empolyee",inputs)
+                await axios.post(`${MainApi}/token/empolyee`,inputs,config)
+                // again + 1
+                // setAgain(again + 1)
+                navigate("/")
                 // document.getElementById("modalId1").style="display:none;";
                 alert("Empolyee Created")
                 

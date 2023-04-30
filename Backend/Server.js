@@ -2,20 +2,22 @@ const express = require("express");
 const db = require("./db")
 const cors = require("cors")
 const app = express()
-const port = 5000
+require("dotenv").config()
+const port = process.env.PORT
 app.use(express.json())
 app.use(cors())
 // THIS IS CLUSTER FOR DO NOT DOWN SERVER
-// const cluster = require("cluster")
-// if(cluster.isMaster){
-//     for(var i=0; i < 2 ; i++ ){
-//         cluster.fork()
-//     }
-//     cluster.on("exit",(worker)=>{
-//         console.log("SERVER -"+worker.id+"- TIME DIED..")
-//         cluster.fork()
-//     })
-// }else{
+const cluster = require("cluster");
+const { checkToken } = require("./Routes/jsonwebtoken");
+if(cluster.isMaster){
+    for(var i=0; i < 2 ; i++ ){
+        cluster.fork()
+    }
+    cluster.on("exit",(worker)=>{
+        console.log("SERVER -"+worker.id+"- TIME DIED..")
+        cluster.fork()
+    })
+}else{
 
 
 
@@ -31,15 +33,20 @@ app.get('/',(req,res)=>{
 // app.use("/users",userRoute)
 
 const empolyeeRouter = require("./Routes/Empolyee")
-app.use('/empolyee',empolyeeRouter)
+const usersRouter = require("./Routes/Users")
 
+
+// app.use('/empolyee',empolyeeRouter)
+app.use('/token/empolyee',checkToken,empolyeeRouter)
+app.use("/users",usersRouter)
+ 
 
 
 
 app.listen(port,(error)=>{
     if(error) throw console.log(error)
-    console.log(`-Server Connected Successfuly-`)
+    console.log(`-Server Connected ${port} Successfuly-`)
 })
-
+ 
 // THIS IS FROM CLUSTER
-// }
+}
