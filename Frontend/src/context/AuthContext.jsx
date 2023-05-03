@@ -12,6 +12,11 @@ export const AuthContextProvider = ({children})=>{
        const res =  await axios.post(`${MainApi}/users/login`,inputs)
        setCurrentUser(res.data)
     }
+    const loginEmpolyee = async (inputs)=>{
+      // console.log(inputs)
+     const res =  await axios.post(`${MainApi}/users/empolyee/login`,inputs)
+     setCurrentUser(res.data)
+  }
     // ======logout function=======
      const logout = async(inputs)=>{
       //   await axios.post(`${MainApi}/users/logout`)
@@ -24,7 +29,7 @@ export const AuthContextProvider = ({children})=>{
      }, [currentUser])
      
      return(
-     <AuthContext.Provider value={{currentUser, login , logout}}>
+     <AuthContext.Provider value={{currentUser, login , logout,loginEmpolyee}}>
         {children}
      </AuthContext.Provider>
         )

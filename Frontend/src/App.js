@@ -9,15 +9,17 @@ import NewUpdateEm from "./Component/UpdateEmpolyee";
 import LoginPage from "./Component/Login";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import ShowSingleEmpolyee from "./Component/ShowSingleEmpolyee";
+import ProfilePage from "./Pages/Profile";
 
 
 
 function App() {
-  const { logout } = useContext(AuthContext)
-  window.onload = ()=>{
-    // console.log("Page LOaded")
-    logout()
-  }
+  // const { logout } = useContext(AuthContext)
+  // window.onload = ()=>{
+  //   // console.log("Page LOaded")
+  //   logout()
+  // }
   // setInterval(()=>{
   //   logout()
   // },86400)
@@ -33,15 +35,25 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           {/* <Route path='/empolyee' element={<Empolyee />} /> */}
           {currentUser?
-          <Route path="">
-          <Route path='/empolyee' element={<Empolyee />} />
-          <Route path='/empolyee/:id' element={<Empolyee />} />
-          <Route path='/update/empolyee/' element={<NewUpdateEm />} />
-          <Route path='/update/empolyee/:id' element={<NewUpdateEm />} />
-          </Route>
+            currentUser.user_type?
+              <Route path="">
+              <Route path='/empolyee' element={<Empolyee />} />
+              <Route path='/empolyee/:id' element={<Empolyee />} />
+              <Route path='/update/empolyee/' element={<NewUpdateEm />} />
+              <Route path='/single/empolyee/' element={<ShowSingleEmpolyee />} />
+              <Route path='/update/empolyee/:id' element={<NewUpdateEm />} />
+              </Route>
+            :null
           :
           null
             
+          }
+          {currentUser?
+              currentUser.empolyee_id?
+              <Route path='/profile' element={<ProfilePage />} />
+              :null
+            :null
+
           }
             <Route path='*' element={<LoginPage state={LoginPlease} />} />
           </Route>

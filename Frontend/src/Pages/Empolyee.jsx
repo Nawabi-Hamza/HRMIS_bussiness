@@ -4,6 +4,7 @@ import "../App.css"
 import { Link } from 'react-router-dom'
 import CreateEmpolyee from '../Component/CreateEmpolyee'
 import { AuthContext, MainApi } from '../context/AuthContext'
+import ShowSingleEmpolyee from '../Component/ShowSingleEmpolyee'
 // import _ from "lodash";
 // import UpdateEmpolyee from '../Component/UpdateEmpolyee';
 
@@ -13,7 +14,7 @@ export default function Empolyee() {
     const [ again,setAgain ] = useState(0)
     // ================= this is for use token for access api page ============
     const config = {
-        headers: { Authorization: `Bearer ${currentUser.data.token}` }
+        headers: { Authorization: `Bearer ${currentUser.token}` }
         };
     // =============== Delete User ====================
     const handleDelete = async(userId)=>{
@@ -24,13 +25,13 @@ export default function Empolyee() {
             setAgain(again + 1)
             alert("User Deleted Successfuly....")
         }catch(error){
-            return error
+            return console.log(error)
         }
     }
     // ================ Show User ====================
     const [ data,setData ] = useState([])
     const [ totalSalary,setTotalSalary ] = useState(0)
-        
+    const [ loading,setLoading ] = useState(true)
         // const bodyParameters = {
         // key: "value"
         // };
@@ -40,6 +41,8 @@ export default function Empolyee() {
             try{
                 const response = await axios.get(`${MainApi}/token/empolyee`,config)
                 setData(response.data);
+                setLoading(false)
+                // console.log(response)
                 //   ============push all empolyee salary to an array 
                 const show = response.data;
                 const totalSalary = []
@@ -80,61 +83,62 @@ export default function Empolyee() {
     <div className='bg-light'>
         <div className="container py-5">
                 <div className='d-flex justify-content-between my-3'>
-                        <h1 className='ps-4 mt-2 my-text-primary'>HRMIS</h1>
+                        <h1 className='ps-4 mt-2 my-text-primary'>HRMIS Empolyees List</h1>
                         <div className='d-flex gap-2'>
-                        {/* <ul className='navbar-nav btn ps-2'>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="/" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Month Report</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                {month.map((items)=>(
-                                    <Link class="dropdown-item" to={`/empolyee/${++count}`}>{items + " " + count}</Link>
-                                ))}
-                            </div>
-                        </li>
-                        </ul> */}
                         <button className='btn my-btn-primary' data-bs-toggle="modal" data-bs-target="#modalId">Create New Empolyee</button>
                         </div>
 
                 </div>
-                <div class="table-responsive">
-                    <table  class="table table-striped my-bg-primary">
+                <div className="table-responsive">
+                {loading?   
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border text-primary display-1" style={{fontSize:"34px"}} role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+                            : 
+                    <table  className="table table-striped my-bg-table-primary">
                         <thead className='table-head'>
                             <tr>
                                 <th className=''>#ID</th>
                                 <th className=''>Name</th>
                                 <th>Father Name</th>
-                                <th>Designation</th>
+                                <th>Email</th>
                                 <th>Job Description</th>
-                                <th>Position</th>
                                 <th>Salary</th>
                                 <th>Join Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
+                         
                         <tbody className='table-body'>
-                            {data.map((items)=>(
-                            <tr key={items.empolyee_id} class="text-muted">
-                                <td>{items.empolyee_id}</td>
-                                <td>{items.empolyee_name}</td>
+                            {data && data.map((items)=>(
+                                <tr key={items.empolyee_id} className="text-muted">
+                                <td >{items.empolyee_id}</td>
+                                <td style={{fontFamily:"cursive",fontWeight:700}}>{items.empolyee_name}</td>
                                 <td>{items.empolyee_f_name}</td>
-                                <td>{items.empolyee_designation}</td>
+                                <td>{items.empolyee_email}</td>
                                 <td>{items.empolyee_job_description}</td>
-                                <td>{items.empolyee_position}</td>
                                 <td >{items.empolyee_salary}</td>
                                 <td>{convertDate(items.date_of_join)}</td>
                                 <td>
                                 <Link to={`/update/empolyee/${items.empolyee_id}`} state={items}><button className='btn my-btn-outline-primary' data-bs-toggle="modal" data-bs-target="#updateModalId">Edite</button></Link>
                                     <button className='btn my-btn-outline-primary' onClick={()=>handleDelete(items.empolyee_id)}>Delete</button>
+                                    <Link to={`/single/empolyee`} state={items}>
+                                    <button className='btn my-btn-outline-primary'>More</button>
+                                    </Link>
+                                    
                                 </td>
                             </tr>
                             ))}
-                            <tr class="text-muted">
-                                <td colSpan={6} className='fw-bold h4'>Total Salary</td>
-                                <td className='fw-bold h4'>{totalSalary}-Af</td>
-                            </tr>
                         </tbody>
                     </table>                      
+                            }
             </div>        
+                    <div className="d-flex justify-content-around border p-5 bg-white">
+                        <td colSpan={6} className='fw-bold h4'>Total Salary</td>
+                        <td className='fw-bold h4'>{totalSalary}-Af</td>
+                    </div>
         </div>
         <CreateEmpolyee state={again}/>    
     </div>
@@ -142,5 +146,46 @@ export default function Empolyee() {
 }
 
 
+// function SingleEmpolyee(items){
+//     console.log(items)
+//     return(<>
+//     {/* Model Start */}
+//     <div className="alert alert-danger">
+//         asdfsadf
+//     </div>
+//     <div className="modal fade"  id="moreInfo" tabindex="-1"  data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+//         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" data-bs-dismiss="model" role="document">
+//             <div className="modal-content">
+//                 <div className="modal-header">
+//                     <h5 className="modal-title" id="modalTitleId">More Information <span className='my-text-primary'>{items.empolyee_name}</span></h5>
+//                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+//                 </div>
+            
+//                 <div className="modal-body">
+//                     {/* <label htmlFor="name">Name:</label>
+//                     <input type="text" name='name' onChange={handlChange} className='form-control' />
+//                     <label htmlFor="f_name">Father Name:</label>
+//                     <input type="text" name='f_name' onChange={handlChange} className='form-control' />
+//                     <label htmlFor="designation">Designation:</label>
+//                     <input type="text" name='designation' onChange={handlChange} className='form-control' />
+//                     <label htmlFor="job_description">Job Description:</label>
+//                     <input type="text" name='job_description' onChange={handlChange} className='form-control' />
+//                     <label htmlFor="position">Position:</label>
+//                     <input type="text" name='position' onChange={handlChange} className='form-control' />    
+//                     <label htmlFor="salary">Salary:</label>
+//                     <input type="text" name='salary' onChange={handlChange} className='form-control' /> */}
 
+//                 </div>
+//                 <div className="modal-footer">
+//                     <button type="button" id='modelClose' className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+//                     {/* <button type="button" className="btn my-btn-primary" onClick={handeCreateEmpolyee} data-bs-dismiss="modal">Save</button> */}
+//                 </div>
+
+//             </div>
+//         </div>
+//     </div>
+// {/* Model End */}
+//     </>)
+// }
+// SingleEmpolyee('')
 

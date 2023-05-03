@@ -10,18 +10,44 @@
   color: var(--my-text);
 }
 
+
+/* This is for table style */
+.my-bg-table-primary{
+  border: 1px solid var(--my-background);
+  transition: .6s;
+}
+/* table stlye */
+.my-bg-table-primary td{
+  padding-top: 20px;
+}
+.my-bg-table-primary tr{
+  background-image: linear-gradient(#1095c1,#1095c1);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  transition: .4s;
+}
+.my-bg-table-primary tr:nth-child(odd){
+  background-color: var(--my-background);
+}
+.my-bg-table-primary tr:hover{
+  background-color: var(--my-text);
+  background-size: 100% 100%;
+
+}
+
+
+/* This is for using button style */
 .my-btn-primary{
   background-color: var(--my-background);
   color: white;
   transition: .7s;
 
 }
-
-.my-btn-primary:hover{
-  background-color: white;
+.my-btn-primary:hover,.my-btn-primary:focus{
   color: var(--my-text);
   border: 1px solid var(--my-text);
-  transition: .7s;
+  transform: translateY(-0.25em);
+
 }
 
 .my-btn-outline-primary{
@@ -29,11 +55,18 @@
   color: var(--my-text);
   border: 1px solid var(--my-text);
   transition: .7s;
+  
 }
 
-.my-btn-outline-primary:hover{
+.my-btn-outline-primary:hover,.my-btn-outline-primary:focus{
   border: 1px solid var(--my-text);
   background-color: var(--my-background);
   color: white;
   transition: .7s;
+  box-shadow: inset 6.5em 0 0 0 var(--my-background);
+}
+
+/* single table design */
+.my-single-table td{
+  padding:15px;
 }

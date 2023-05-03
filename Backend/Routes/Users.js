@@ -1,7 +1,8 @@
 const express = require("express")
 const db = require("../db");
 const router = express.Router()
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { checkToken } = require("./jsonwebtoken");
 // ===REGISTER USER===
 router.post('/register',(req,res)=>{
     const q = "SELECT * FROM users WHERE user_name = ? OR user_email = ?";
@@ -20,6 +21,46 @@ router.post('/register',(req,res)=>{
     })
 })
 
+// ==============Login Empolyee======================
+// router.post('/empolyee/login',(req,res)=>{
+//     const q = "SELECT * FROM `empolyee` WHERE `empolyee_name` = ? AND `empolyee_password` =?"
+//     const value = [ req.body.user_name,req.body.user_password]
+//     db.query(q,value,(error,data)=>{
+//         if(error) return res.status(400).json(error)
+//         else if(!data) return res.status(404).json({error:"Empolyee Dosen't Exist !"})
+//         else{
+
+//             const {empolyee_password,empolyee_job_description,empolyee_position,empolyee_salary,empolyee_education,date_of_join,...other} = data[0]
+//             // return res.status(200).json(other)
+//             const token = jwt.sign({ data: data }, process.env.JSONWEBTOKENEMPOLYEE, { expiresIn: '1d' });
+//             // Return the JWT to the client
+//             // data.a({hello:"NIce"})
+//             return res.json({...other,token: token});
+//         }
+//     })
+// })
+
+router.post('/empolyee/login',(req,res)=>{
+    const q = "SELECT * FROM `empolyee` WHERE `empolyee_name` = ?"
+    const value = [ req.body.user_name ]
+    db.query(q,value,(error,data)=>{
+        if(error) return res.send(error)
+        if(!data.length) return res.status(404).json({error:"Empolyee Dosen't Exist !"})
+        // else if(!data) return res.status(404).json({error:"Empolyee Dosen't Exist !"})
+        else{
+            if(data[0].empolyee_password===req.body.user_password){
+                const {empolyee_password,empolyee_job_description,empolyee_position,empolyee_salary,empolyee_education,date_of_join,...other} = data[0]
+                // return res.status(200).json(other)
+                const token = jwt.sign({ data: data }, process.env.JSONWEBTOKENEMPOLYEE, { expiresIn: '1d' });
+                return res.json({...other,token: token});
+            }
+            else{
+                res.status(400).json({error:"Please Enter Correct Password !"})
+            }
+        }
+    })
+})
+// ===========Login User Admin ===========
 router.post('/login',(req,res)=>{
     const q = "SELECT * FROM users WHERE user_name = ?";
     db.query(q,[req.body.user_name],(error,data)=>{
@@ -34,10 +75,10 @@ router.post('/login',(req,res)=>{
             // let result = (data[0].user_password==undefined)
             // let result = (other.user_password==undefined)
             // Generate a JWT using the user ID as the payload
-            const token = jwt.sign({ data: data }, process.env.JSONWEBTOKEN, { expiresIn: '1h' });
+            const token = jwt.sign({ data: data }, process.env.JSONWEBTOKEN, { expiresIn: '1d' });
             // Return the JWT to the client
             // data.a({hello:"NIce"})
-            return res.json({ data:{...other,token: token} });
+            return res.json({...other,token: token});
         }
         return res.status(400).json({error:"Please Type Correct Password..."})
         // mybody===dbbody? (res.send(other)):(res.send("Please Type Correct Password..."))
@@ -45,8 +86,12 @@ router.post('/login',(req,res)=>{
 })
 
 
-router.get('/auth',(req,res)=>{
-    res.send("Hello This is router")
+router.get('/auth',checkToken,(req,res)=>{
+    const q = "SELECT * FROM `users`"
+    db.query(q,(error,data)=>{
+        if(error) return res.send(error)
+        return res.send(data)
+    })
 })
 
 

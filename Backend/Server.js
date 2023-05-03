@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 // THIS IS CLUSTER FOR DO NOT DOWN SERVER
 const cluster = require("cluster");
-const { checkToken } = require("./Routes/jsonwebtoken");
+const { checkToken, checkTokenEmpolyee } = require("./Routes/jsonwebtoken");
 if(cluster.isMaster){
     for(var i=0; i < 2 ; i++ ){
         cluster.fork()
@@ -33,11 +33,13 @@ app.get('/',(req,res)=>{
 // app.use("/users",userRoute)
 
 const empolyeeRouter = require("./Routes/Empolyee")
+const attendanceEmpolyee = require("./Routes/EmpolyeeToken")
 const usersRouter = require("./Routes/Users")
 
 
 // app.use('/empolyee',empolyeeRouter)
 app.use('/token/empolyee',checkToken,empolyeeRouter)
+app.use('/empolyee',checkTokenEmpolyee,attendanceEmpolyee)
 app.use("/users",usersRouter)
  
 
