@@ -9,7 +9,7 @@ export default function ProfilePage() {
     }
     const [ count,setCount ] = useState(0)
     // console.log(currentUser.empolyee_id)
-    const [ data,setData ] = useState()
+    const [ data,setData ] = useState([])
     // console.log(data)
     useEffect(()=>{
         const fetchData = async()=>{
@@ -48,7 +48,8 @@ export default function ProfilePage() {
         return dateShow;
     }
     const newDate = new Date()
-    var currentDate = newDate.getFullYear()+"-"+(newDate.getMonth() + 1 )+"-"+newDate.getDay()
+    // const currentDate = new Date().getDate()
+    var currentDate = newDate.getFullYear()+"-"+(newDate.getMonth() + 1 )+"-"+ newDate.getDate()
     // const [ myDa,setMyDe] = useState()
     // console.log(currentDate)
     // console.log(myDa)
@@ -71,19 +72,23 @@ export default function ProfilePage() {
             console.log(error)
         }
     }
+    // const [ dataState,setDataState ] = useState()
+    // console.log("Current Date: " +currentDate)
+        // console.log(data[0].attendance_date)
   return (
     <div>
         {data && data.map((items)=>(
         <center className='my-4' key={items.attendance_id}>
         <h1>Welcome {currentUser.empolyee_name}</h1>
-        <button className='m-2 btn'>{items.attendance_day}</button>
+        <button className='m-2 btn' >{items.attendance_day}</button>
         {/* {items.attendance_day} */}
+        {/* {console.log("Date From Data Base: "+convertDate(items.attendance_date))} */}
         {currentDate===convertDate(items.attendance_date)?
         // console.log(convertDate(items.attendance_date))
         <span className='p-2'>Present</span>
         :
         // console.log(convertDate(items.attendance_date))
-
+            // <button></button>
         <button className='my-btn-outline-primary p-4 me-2 mt-4' onClick={()=>handlePresend(items.attendance_day,items.attendance_leave)}> Day Presend</button>
         }
         <button className='m-2 btn'>{items.attendance_leave}</button>
@@ -92,6 +97,8 @@ export default function ProfilePage() {
         :
         <button className='my-btn-outline-primary p-4 ms-2 mt-4'onClick={()=>handleLeave(items.attendance_leave,items.attendance_day)}> Day Leave</button>
         }
+        {/* Change Password */}
+
         </center>
         ))}
         {data ? 
@@ -100,6 +107,10 @@ export default function ProfilePage() {
             <button className='btn my-btn-outline-primary' onClick={handleCreateAttendace}>Create Your Attendance</button>
             </center>:null
             :null}
+            <center>
+            <button className='btn my-btn-outline-primary' onClick={()=>alert("Now You Cann't change your password ...")}>Change Password</button>
+            </center>
+
     </div>
   )
 }

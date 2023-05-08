@@ -49,7 +49,7 @@ export default function CreateEmpolyee() {
             }
         }
       }
-  return (
+  return (     
     <div >
         <div className="modal fade"  id="modalId" tabindex="-1"  data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
             <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" data-bs-dismiss="model" role="document">
@@ -72,12 +72,12 @@ export default function CreateEmpolyee() {
                         <input type="text" name='position' onChange={handlChange} className='form-control' />    
                         <label htmlFor="salary">Salary:</label>
                         <input type="text" name='salary' onChange={handlChange} className='form-control' />
-                        <label htmlFor="education">Education:</label>
-                        <input type="text" name='education' onChange={handlChange} className='form-control' />
                         <label htmlFor="password">Password:</label>
                         <input type="text" name='password' onChange={handlChange} className='form-control' />
+                        <label htmlFor="education">Education:</label>
+                        <textarea type="text" name='education' onChange={handlChange} className='form-control' placeholder='Certificates' ></textarea>
                     </div>
-                    <div className="modal-footer">
+                    <div className="d-flex justify-content-center pb-2 gap-2">
                         <button type="button" id='modelClose' className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" className="btn my-btn-primary" onClick={handeCreateEmpolyee} data-bs-dismiss="modal">Save</button>
                     </div>

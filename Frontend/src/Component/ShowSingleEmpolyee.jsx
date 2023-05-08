@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom'
 import { AuthContext, MainApi } from '../context/AuthContext'
 import axios from 'axios'
 
-import { PDFDownloadLink,Document,Page,View,Text } from "@react-pdf/renderer"
+import { PDFDownloadLink,Document,Page,View,Text,StyleSheet } from "@react-pdf/renderer"
 
-var show 
-
+var show ;
+//  convert database date from ISO time zone to simple data
 const convertDate = (date)=>{
     const show = date;
     const mainDate = new Date(show);
@@ -16,7 +16,7 @@ const convertDate = (date)=>{
     var dateShow = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
     return dateShow;
 }
-
+// show single user inforamtion
 export default function ShowSingleEmpolyee() {
     const state = useLocation().state
     const [ data,setData ] = useState()
@@ -46,17 +46,7 @@ export default function ShowSingleEmpolyee() {
         }
         fetchdata()
     },[])
-    // convert date
-    // const convertDate = (date)=>{
-    //     const show = date;
-    //     const mainDate = new Date(show);
-    //     const year = mainDate.getFullYear();
-    //     const month = mainDate.getMonth() + 1;
-    //     const day = mainDate.getDate();
-    //     var dateShow = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    //     return dateShow;
-    // }
-
+ 
 
   return (
     <>
@@ -66,7 +56,7 @@ export default function ShowSingleEmpolyee() {
                 <center>
                 <div className="d-flex justify-content-center">
                     <div className="spinner-border text-primary display-1" style={{fontSize:"34px"}} role="status">
-                        <span className="sr-only">Loading...</span>
+                        <span className="sr-only"></span>
                     </div>
                 </div>
                 </center>:
@@ -80,9 +70,7 @@ export default function ShowSingleEmpolyee() {
                                <tr>
                                 <th>Username:</th>
                                 <th>{items.empolyee_name} &nbsp; &nbsp; &nbsp; &nbsp;
-                                   <button className=' btn my-btn-outline-primary bg-white'>
-                                   <PDFDownloadLink document={<Download/>} style={{textDecoration:"none",color:"#42bce4"}} fileName={`${items.empolyee_name}.pdf`} className="mb-5">Download Info</PDFDownloadLink>
-                                   </button>                            
+                                                             
                                     {/* <th id='showButton'></th>
                                     {setTimeout(()=>{
                                         document.getElementById("showButton").innerHTML=
@@ -126,12 +114,23 @@ export default function ShowSingleEmpolyee() {
                                     {items.attendance_id?
                                 <tr>
                                     <td>Leave:</td>
-                                    <td>{items.attendance_leave}</td>
+                                    <td>{items.attendance_leave}
+                                    <button className='btn ms-3 btn-dark'>
+                                    <PDFDownloadLink document={<Download/>} className="link-info " fileName={`${items.empolyee_name}.pdf`}>Download PDF</PDFDownloadLink>
+                                    </button> 
+                                    </td>
                                 </tr>
-                                    :null}
+                                    :
+                                    <tr>
+                                    <td className='bg-light'>
+                                    <button className='btn ms-3 btn-dark'>
+                                    <PDFDownloadLink document={<Download/>} className="link-info " fileName={`${items.empolyee_name}.pdf`}>Download PDF</PDFDownloadLink>
+                                    </button> 
+                                    </td>
+                                </tr> }
                             </table>              
                        
-                           
+                           {/* {items && Download()} */}
                         </div>
                     ))}
 
@@ -141,46 +140,60 @@ export default function ShowSingleEmpolyee() {
     </>
   )
 }
+const styles = StyleSheet.create({
+    page: { backgroundColor: '#1095c1' },
+    section: { color: 'white', textAlign: 'around', margin: 20,border:"1px solid white", },
+    column: { border:"1px solid white",margin:20,color:"#1095c1",padding:10 ,  backgroundColor: 'white' }
+    
+  });
 
-
-
+// Download PDF inforamtion of user
 function Download(){
     const items = show
     // console.log(items)
     return(<>
     <Document>
-        <Page size="A4">
-            <View style={{display:"flex",justifyContent:"center"}}>
-                <Text style={{padding:"100px",color:"#42bce4"}}>
+        <Page size="A4" style={styles.page}>
+            <View style={styles.section} >
+                <Text style={styles.column} >
                     Username:
-                    {items[0].empolyee_name} {'\n'}
-                        
+                    {items[0].empolyee_name}
+                </Text>
+                <Text style={styles.column}>
                     Father/Name:
-                    {items[0].empolyee_f_name} {'\n'}
-                        
+                    {items[0].empolyee_f_name}
+                </Text>
+                <Text style={styles.column}>
                     Email:
-                    {items[0].empolyee_email} {'\n'}
-                        
+                    {items[0].empolyee_email}
+                </Text>
+                <Text style={styles.column}>
                     Education:
-                    {items[0].empolyee_education} {'\n'}
-
+                    {items[0].empolyee_education}
+                </Text>
+                <Text style={styles.column}>
                     Position:
-                    {items[0].empolyee_position} {'\n'}
-                        
+                    {items[0].empolyee_position}
+                </Text>
+                <Text style={styles.column}>
                     Job_Description:
-                    {items[0].empolyee_job_description} {'\n'}
-                    
+                    {items[0].empolyee_job_description}
+                </Text>
+                <Text style={styles.column}>
                     Salary:
-                    {items[0].empolyee_salary} {'\n'}
-                    
+                    {items[0].empolyee_salary}
+                </Text>
+                <Text style={styles.column}>
                     Join_Date:
-                    {convertDate(items[0].date_of_join)} {'\n'}
-                        
+                    {convertDate(items[0].date_of_join)}
+                </Text>
+                <Text style={styles.column}>
                     Presend:
-                    {items[0].attendance_day} {'\n'}
-                
+                    {items[0].attendance_day}
+                </Text>
+                <Text style={styles.column}>
                     Leave:
-                    {items[0].attendance_leave} {'\n'}
+                    {items[0].attendance_leave}
                 </Text>
             </View>
         </Page>

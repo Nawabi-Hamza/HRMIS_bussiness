@@ -86,14 +86,14 @@ export default function Empolyee() {
                         <h1 className='ps-4 mt-2 my-text-primary'>HRMIS Empolyees List</h1>
                         <div className='d-flex gap-2'>
                         <button className='btn my-btn-primary' data-bs-toggle="modal" data-bs-target="#modalId">Create New Empolyee</button>
-                        </div>
+                     </div>
 
                 </div>
                 <div className="table-responsive">
                 {loading?   
                 <div className="d-flex justify-content-center">
                     <div className="spinner-border text-primary display-1" style={{fontSize:"34px"}} role="status">
-                        <span className="sr-only">Loading...</span>
+                        <span className="sr-only"></span>
                     </div>
                 </div>
                             : 

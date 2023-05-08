@@ -17,7 +17,7 @@ export default function Navbar() {
     }
   return (
     <div>
-        <nav className="navbar navbar-expand-sm position-sticky my-bg-primary top-0 " style={{zIndex:"10"}}>
+        <nav className="navbar navbar-expand-sm position-sticky top-0 " style={{zIndex:"10"}}>
               <div className="container">
                 <Link className="navbar-brand" to="/">
                     <img style={{height:"40px"}} src="https://th.bing.com/th/id/R.5c65b3ba4fceea63637c97c7e169d74f?rik=N9a2bjBOhtoOdA&riu=http%3a%2f%2falkemites.com%2falkemites%2fmis%2frsz_hrmis-logo.png&ehk=jDOmkvjXIk2%2fL0sOdpokL%2b%2fu46DEcAmCQSTtBKxBBQE%3d&risl=&pid=ImgRaw&r=0" alt="" />

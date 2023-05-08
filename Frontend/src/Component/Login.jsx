@@ -49,7 +49,7 @@ export default function LoginPage(LoginPage) {
              }
         }
         else{
-            alert("None")
+            alert("Please Select User Type ...")
         }
     }
   return (
