@@ -10,12 +10,25 @@
   color: var(--my-text);
 }
 
+/* Home Page Table Style */
+#groupTableWork tr th {
+  text-align: center;
+}
+#groupTableWork tr th ,
+#groupTableWork tr td {
+  border: 1px solid var(--my-text);
+  padding: 10px;
+}
+
+
+
 
 /* This is for table style */
 .my-bg-table-primary{
   border: 1px solid var(--my-background);
   transition: .6s;
 }
+
 /* table stlye */
 .my-bg-table-primary td{
   padding-top: 20px;
@@ -93,3 +106,12 @@ nav{
 
   }
   }
+
+  /* Porfile Page Empolyee */
+ 
+  .profileEmpolyee .alerts .alert{
+    margin: 10px;
+    width: 40%;
+    
+  }
+

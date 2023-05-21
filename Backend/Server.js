@@ -39,6 +39,7 @@ const usersRouter = require("./Routes/Users")
 
 // app.use('/empolyee',empolyeeRouter)
 app.use('/token/empolyee',checkToken,empolyeeRouter)
+// app.use('/token/empolyee',empolyeeRouter)
 app.use('/empolyee',checkTokenEmpolyee,attendanceEmpolyee)
 app.use("/users",usersRouter)
  

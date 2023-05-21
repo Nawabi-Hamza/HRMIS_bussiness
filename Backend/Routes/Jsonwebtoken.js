@@ -18,7 +18,7 @@ const checkToken = (req,res,next)=>{
         })
     }else{
         res.json({
-            message:"Access Denied This is Not For You Fucking Bitch..."
+            message:"Access Denied This is Not For You Fucking Bitch This is for admin..."
         })
     }
 }

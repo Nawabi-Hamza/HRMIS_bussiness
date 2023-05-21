@@ -128,6 +128,14 @@ export default function ShowSingleEmpolyee() {
                                     </button> 
                                     </td>
                                 </tr> }
+                                <tr>
+                                    <td>Total Salary:</td>
+                                    {items.attendance_day?
+                                        <td>{Math.round(Number(items.empolyee_salary)/26)*Number(items.attendance_day)
+                                        }</td>
+
+                                        :<td>User Dosen't Present</td>}
+                                </tr>
                             </table>              
                        
                            {/* {items && Download()} */}

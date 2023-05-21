@@ -81,8 +81,18 @@ router.delete('/:id',(req,res)=>{
     })
     // const id = req.params.id;
 })
+// =======================Take Empolyee With Attendance ===================
+// SELECT empolyee.empolyee_name ,empolyee.empolyee_f_name , empolyee.empolyee_email , empolyee.empolyee_salary, attendance.attendance_day , attendance.attendance_leave , attendance.attendance_date FROM `empolyee` INNER JOIN attendance ON attendance.attendance_user = empolyee.empolyee_id WHERE attendance.attendance_date LIKE "2023-05%"
+router.post("/globle/empolyee",(req,res)=>{
+    // const q = "SELECT empolyee.empolyee_name ,empolyee.empolyee_f_name , empolyee.empolyee_email , empolyee.empolyee_salary, attendance.attendance_day , attendance.attendance_leave FROM `empolyee` INNER JOIN attendance ON attendance.attendance_user = empolyee.empolyee_id";
+    const date = req.body.date
+    const q = `SELECT empolyee.empolyee_name ,empolyee.empolyee_f_name , empolyee.empolyee_email , empolyee.empolyee_salary, attendance.attendance_day , attendance.attendance_leave , attendance.attendance_date FROM empolyee INNER JOIN attendance ON attendance.attendance_user = empolyee.empolyee_id WHERE attendance.attendance_date LIKE ?`;
 
-
+    db.query(q,[date],(err,data)=>{
+        if(err) return err;
+        res.status(200).json(data)
+    })
+})
 
 
 
